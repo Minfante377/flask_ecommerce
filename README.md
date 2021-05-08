@@ -1,0 +1,3 @@
+# This is an ecommerce app developed using Flask.
+
+## Work in progress...

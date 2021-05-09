@@ -1,4 +1,8 @@
-from app import db
+from flask_sqlalchemy import SQLAlchemy
+
+from app import app
+
+db = SQLAlchemy(app)
 
 
 class Product(db.Model):
@@ -12,5 +16,5 @@ class Product(db.Model):
         return self.title
 
 
-db.create_all()
+db.create_all(app=app)
 db.session.commit()

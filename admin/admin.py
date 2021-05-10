@@ -5,7 +5,7 @@ from flask_admin.form.upload import ImageUploadField
 import flask_login as login
 
 from wtforms import form, fields, validators
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'png', 'jpeg']
@@ -66,6 +66,12 @@ class ProductAdminView(ModelView):
                            'allowed_extensions': ALLOWED_IMAGE_EXTENSIONS}}
 
 
+class AdminUserView(ModelView):
+
+    def on_model_change(self, form, model, is_created):
+        model.password = generate_password_hash(model.password)
+
+
 class AdminBluePrint(Blueprint):
     views = None
 
@@ -84,6 +90,9 @@ class AdminBluePrint(Blueprint):
 
     def add_product_view(self, view, db):
         self.admin.add_view(ProductAdminView(view, db.session))
+
+    def add_adminuser_view(self, view, db):
+        self.admin.add_view(AdminUserView(view, db.session))
 
     def register(self, app, options, first_registration=False):
         return super(AdminBluePrint, self).register(app, options,

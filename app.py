@@ -29,4 +29,5 @@ if __name__ == "__main__":
     db.init_app(app)
     init_login()
     admin_bp.add_product_view(Product, db)
+    admin_bp.add_adminuser_view(AdminUser, db)
     app.run()

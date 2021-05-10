@@ -16,5 +16,5 @@ app.register_blueprint(admin_bp)
 if __name__ == "__main__":
     from models import db, Product
     db.init_app(app)
-    admin_bp.add_view(Product, db)
+    admin_bp.add_product_view(Product, db)
     app.run()

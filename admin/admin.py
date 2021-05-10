@@ -32,6 +32,9 @@ class LoginForm(form.Form):
 
 class SecureAdminIndexView(AdminIndexView):
 
+    def is_visible(self):
+        return False
+
     @expose('/')
     def index(self):
         if not login.current_user.is_authenticated:

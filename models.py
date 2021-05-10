@@ -16,5 +16,32 @@ class Product(db.Model):
         return self.title
 
 
+class AdminUser(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(100))
+    last_name = db.Column(db.String(100))
+    cellphone = db.Column(db.String(20))
+    username = db.Column(db.String(80), unique=True)
+    password = db.Column(db.String(64))
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+
+    def __unicode__(self):
+        return self.username
+
+
 db.create_all(app=app)
 db.session.commit()

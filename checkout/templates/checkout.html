@@ -1,0 +1,35 @@
+<head>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from bootdey.com    @bootdey on twitter -->
+    <!--  All snippets are MIT license http://bootdey.com/license -->
+    <title>PuraNat!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col"> </th>
+			<th scope="col">Producto</th>
+			<th scope="col">Precio</th>
+			<th scope="col">Notas</th>
+			<th scope="col">Cantidad</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for product in products %}
+		<tr>
+			<th scope="row">{{ loop.index }}</th>
+			<td><img src='/products/static/{{ product.image }}' class="img-responsive img-rounded"
+			     style="max-height: 100px; max-width: 50px;"></td>
+			<td>{{ product.title }}</td>
+			<td>{{ product.price }}</td>
+			<td><input type="text" class="form-control" id="notes{{ loop.index }}" placeholder="Sabores o requerimientos especiales."></td>
+			<td><input class="form-control" type="number" value="0" id="quantity{{ loop.index }}"></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+</body>

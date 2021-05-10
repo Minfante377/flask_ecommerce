@@ -4,6 +4,7 @@ from flask_login import LoginManager
 import config
 
 from products.products import products_bp
+from checkout.checkout import checkout_bp
 from admin.admin import AdminBluePrint
 
 
@@ -12,6 +13,7 @@ app.config.from_object(config)
 
 admin_bp = AdminBluePrint(app)
 app.register_blueprint(products_bp, url_prefix='/products')
+app.register_blueprint(checkout_bp, url_prefix='/checkout')
 app.register_blueprint(admin_bp)
 
 

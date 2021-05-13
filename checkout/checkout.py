@@ -55,10 +55,12 @@ def order():
     order = Order.query.all()[-1]
     for item in items:
         title = item['title'].split(">")[1].split("<")[0]
-        db.session.add(Item(title=title, total=int(item['total'].strip("$")),
-                            quantity=int(item['quantity']),
-                            description=item['description'],
-                            order_id=order.id))
+        db.session.add(Item(
+            title=title,
+            total=int(item['total'].strip("$").strip("<strong>")),
+            quantity=int(item['quantity']),
+            description=item['description'],
+            order_id=order.id))
     db.session.commit()
     session['session_products'] = []
     return "Order created!"

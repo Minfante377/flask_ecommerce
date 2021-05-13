@@ -14,6 +14,7 @@
 						<th>Producto</th>
 						<th>Descripcion</th>
 						<th>Cantidad</th>
+						<th>Notas</th>
 						<th class="text-center">Precio</th>
 						<th class="text-center">Total</th>
 						<th> </th>
@@ -44,6 +45,9 @@
 							<td class="col-sm-1 col-md-1 text-center" name="title"><strong>{{ product.title }}</strong></td>
 							<td class="col-sm-1 col-md-1" style="text-align: center">
 								<input type="numeric" class="form-control" id="quantity{{ loop.index }}" name="quantity" onchange="updateTotal(this.value, {{ loop.index }})">
+							</td>
+							<td class="col-sm-1 col-md-1" style="text-align: center">
+								<input type="text" class="form-control" name="notes">
 							</td>
 							<td class="col-sm-1 col-md-1 text-center" id="price{{ loop.index }}" value="{{ product.price }}"><strong>${{ product.price }}</strong></td>
 							<script>
@@ -96,20 +100,25 @@
 						<td>   </td>
 						<td>   </td>
 						<td>
-						<script>
-							function order(){
-								var titles = document.getElementsByName("title");
-								var subtotals = document.getElementsByName("subtotal");
-								var quantities = document.getElementsByName("quantity");
-								var items = []
-								for(i=0; i < titles.length; i++){
-									items[i] = {"title": titles[i].innerHTML, "total": subtotals[i].innerHTML, "quantity": quantities[i].value, "description": "Dummy"}; 
-								}
-								var total = document.getElementById("totalCheckout").innerHTML;
-								$.ajax({
+							<script>
+								function order(){
+									var titles = document.getElementsByName("title");
+									var subtotals = document.getElementsByName("subtotal");
+									var quantities = document.getElementsByName("quantity");
+									var descriptions = document.getElementsByName("notes");
+									var form = document.getElementById("userData");
+									var firstName = form.elements[0];
+									var lastName = form.elements[1];
+									var cellphone = form.elements[2];
+									var items = []
+									for(i=0; i < titles.length; i++){
+										items[i] = {"title": titles[i].innerHTML, "total": subtotals[i].innerHTML, "quantity": quantities[i].value, "description": descriptions[i].value};
+									}
+									var total = document.getElementById("totalCheckout").innerHTML;
+									$.ajax({
 										url: "/checkout/order",
 										//the data to send to
-										data: JSON.stringify({"items": items, "total": total, "firstName": "Dummy", "lastName": "Dummy", "cellphone": "Dummy"}),
+										data: JSON.stringify({"items": items, "total": total, "firstName": firstName.value, "lastName": lastName.value, "cellphone": cellphone.value}),
 										type: "POST",
 										contentType: "application/json",
 										//on success
@@ -122,12 +131,38 @@
 											console.log("Error creating the orden!")
 											alert("No se pudo crear la orden.");
 										}
-										});
-							}
-						</script>	
-							<button type="button" class="btn btn-success" onclick=order()>
-								Realizar pedido <span class="glyphicon glyphicon-play"></span>
-							</button></td>
+									});
+								}
+							</script>
+							<div style="width:800px;">
+								<div style="width:80%; display: inline-block; float:left; margin-right: 10px;">
+									<form id="userData">
+										<div class="form-group">
+											<label for="firstName">Nombre</label>
+											<input type="text" class="form-control" id="firstName" placeholder="Nombre">
+										</div>
+										<div class="form-group">
+											<label for="lastName">Apellido</label>
+											<input type="text" class="form-control" id="lastName" placeholder="Apellido">
+										</div>
+										<div>
+											<label for="cellphone">Telefono</label>
+											<input type="text" class="form-control" id="cellphone" placeholder="+5493415xxxxxx">
+										</div>
+									</form>
+								</div>
+								<div style="width: 80%; display: inline-block;">
+									<div style="float:left;">
+									<button type="button" class="btn btn" onclick="location.href = '/products'";>Seguir Compando</button>
+									</div>
+									<div style="float:right;">
+									<button type="button" class="btn btn-success" onclick=order()>
+										Realizar pedido <span class="glyphicon glyphicon-play"></span>
+									</button>
+									</div>
+								</div>
+							</div>
+						</td>
 					</tr>
 				</tbody>
 			</table>

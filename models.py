@@ -57,10 +57,12 @@ class Item(db.Model):
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    date = db.Column(db.String(20), nullable=False)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     cellphone = db.Column(db.String(20), nullable=False)
     total = db.Column(db.Integer, nullable=False)
+    done = db.Column(db.Boolean, default=False)
     items = db.relationship('Item', backref='order')
 
     def __repr__(self):

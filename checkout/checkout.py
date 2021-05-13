@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, session, request, abort
 
+from datetime import datetime
+
 
 checkout_bp = Blueprint('checkout', __name__, template_folder='templates',
                         static_folder='static')
@@ -42,8 +44,12 @@ def order():
     cellphone = request.json.get("cellphone")
     if not cellphone:
         abort(400, "Cellphone missing")
+
+    now = datetime.now()
+    ts = now.strftime("%d/%m/%Y %H:%M")
     order = Order(first_name=firstname, last_name=lastname,
-                  cellphone=cellphone, total=int(total))
+                  cellphone=cellphone, total=int(total),
+                  date=ts)
     db.session.add(order)
     db.session.commit()
     order = Order.query.all()[-1]

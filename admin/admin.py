@@ -85,10 +85,12 @@ class OrderView(ModelView):
 
     column_hide_backrefs = False
     can_view_details = True
-    column_list = ('first_name', 'last_name', 'cellphone', 'total', 'items')
+    column_list = ('date', 'first_name', 'last_name', 'cellphone', 'total',
+                   'items', 'done')
     column_labels = dict(title='Nombre', image='Apellido',
                          cellphone='Telefono', total='Total',
-                         items='Items')
+                         items='Items', done="Entregada",
+                         date="Fecha")
 
 
 class AdminBluePrint(Blueprint):

@@ -52,7 +52,7 @@ class Item(db.Model):
     total = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return self.title
+        return "{} {}: {}".format(self.quantity, self.title, self.description)
 
 
 class Order(db.Model):

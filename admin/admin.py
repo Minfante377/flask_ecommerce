@@ -83,7 +83,9 @@ class OrderView(ModelView):
     def is_accessible(self):
         return login.current_user.is_authenticated
 
-    form_columns = ['first_name', 'last_name', 'cellphone', 'total', 'items']
+    column_hide_backrefs = False
+    can_view_details = True
+    column_list = ('first_name', 'last_name', 'cellphone', 'total', 'items')
     column_labels = dict(title='Nombre', image='Apellido',
                          cellphone='Telefono', total='Total',
                          items='Items')

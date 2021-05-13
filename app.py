@@ -35,5 +35,5 @@ if __name__ == "__main__":
     init_login()
     admin_bp.add_product_view(Product, db)
     admin_bp.add_adminuser_view(AdminUser, db)
-    admin_bp.add_view(Order, db)
+    admin_bp.add_order_view(Order, db)
     app.run()

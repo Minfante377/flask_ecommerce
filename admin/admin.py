@@ -71,8 +71,22 @@ class ProductAdminView(ModelView):
 
 class AdminUserView(ModelView):
 
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
     def on_model_change(self, form, model, is_created):
         model.password = generate_password_hash(model.password)
+
+
+class OrderView(ModelView):
+
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
+    form_columns = ['first_name', 'last_name', 'cellphone', 'total', 'items']
+    column_labels = dict(title='Nombre', image='Apellido',
+                         cellphone='Telefono', total='Total',
+                         items='Items')
 
 
 class AdminBluePrint(Blueprint):
@@ -96,6 +110,9 @@ class AdminBluePrint(Blueprint):
 
     def add_adminuser_view(self, view, db):
         self.admin.add_view(AdminUserView(view, db.session))
+
+    def add_order_view(self, view, db):
+        self.admin.add_view(OrderView(view, db.session))
 
     def register(self, app, options, first_registration=False):
         return super(AdminBluePrint, self).register(app, options,

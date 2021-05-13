@@ -52,4 +52,5 @@ def order():
                             description=item['description'],
                             order_id=order.id))
     db.session.commit()
+    session['session_products'] = []
     return "Order created!"

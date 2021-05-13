@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_login import LoginManager
+from flask_session import Session
 
 import config
 
@@ -10,6 +11,8 @@ from admin.admin import AdminBluePrint
 
 app = Flask(__name__)
 app.config.from_object(config)
+
+Session(app)
 
 admin_bp = AdminBluePrint(app)
 app.register_blueprint(products_bp, url_prefix='/products')

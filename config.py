@@ -15,3 +15,6 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 FLASK_ADMIN_SWATCH = 'cerulean'
 UPLOAD_FOLDER = 'products/static/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
+# Session
+SESSION_TYPE = 'filesystem'

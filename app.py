@@ -30,9 +30,10 @@ def init_login():
 
 
 if __name__ == "__main__":
-    from models import db, Product, AdminUser
+    from models import db, Product, AdminUser, Order
     db.init_app(app)
     init_login()
     admin_bp.add_product_view(Product, db)
     admin_bp.add_adminuser_view(AdminUser, db)
+    admin_bp.add_view(Order, db)
     app.run()

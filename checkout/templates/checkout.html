@@ -41,9 +41,9 @@
 							<div class="media">
 								<img class="media-object" src="{{ url_for('products.static', filename=product.image) }}" style="width: 72px; height: 72px;">
 							</div></td>
-							<td class="col-sm-1 col-md-1 text-center"><strong>{{ product.title }}</strong></td>
+							<td class="col-sm-1 col-md-1 text-center" name="title"><strong>{{ product.title }}</strong></td>
 							<td class="col-sm-1 col-md-1" style="text-align: center">
-								<input type="numeric" class="form-control" id="quantity{{ loop.index }}" name="{{ loop.index }}" onchange="updateTotal(this.value, this.name)">
+								<input type="numeric" class="form-control" id="quantity{{ loop.index }}" name="quantity" onchange="updateTotal(this.value, {{ loop.index }})">
 							</td>
 							<td class="col-sm-1 col-md-1 text-center" id="price{{ loop.index }}" value="{{ product.price }}"><strong>${{ product.price }}</strong></td>
 							<script>
@@ -96,7 +96,36 @@
 						<td>   </td>
 						<td>   </td>
 						<td>
-							<button type="button" class="btn btn-success">
+						<script>
+							function order(){
+								var titles = document.getElementsByName("title");
+								var subtotals = document.getElementsByName("subtotal");
+								var quantities = document.getElementsByName("quantity");
+								var items = []
+								for(i=0; i < titles.length; i++){
+									items[i] = {"title": titles[i].innerHTML, "total": subtotals[i].innerHTML, "quantity": quantities[i].value, "description": "Dummy"}; 
+								}
+								var total = document.getElementById("totalCheckout").innerHTML;
+								$.ajax({
+										url: "/checkout/order",
+										//the data to send to
+										data: JSON.stringify({"items": items, "total": total, "firstName": "Dummy", "lastName": "Dummy", "cellphone": "Dummy"}),
+										type: "POST",
+										contentType: "application/json",
+										//on success
+										success: function(data){
+											location.reload()
+											alert("Orden creada con exito. Nos comunicaremos en breve para coordinar el pago y la entrega. Gracias!")
+										},
+										//on error
+										error: function(){
+											console.log("Error creating the orden!")
+											alert("No se pudo crear la orden.");
+										}
+										});
+							}
+						</script>	
+							<button type="button" class="btn btn-success" onclick=order()>
 								Realizar pedido <span class="glyphicon glyphicon-play"></span>
 							</button></td>
 					</tr>

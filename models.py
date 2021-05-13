@@ -45,7 +45,7 @@ class AdminUser(db.Model):
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), nullable=False)
     title = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(300), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
@@ -61,10 +61,10 @@ class Order(db.Model):
     last_name = db.Column(db.String(50), nullable=False)
     cellphone = db.Column(db.String(20), nullable=False)
     total = db.Column(db.Integer, nullable=False)
-    items = db.relationship('Item', backref=db.backref('order'))
+    items = db.relationship('Item', backref='order')
 
     def __repr__(self):
-        return self.order_id
+        return str(self.id)
 
 
 db.create_all(app=app)

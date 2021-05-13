@@ -45,6 +45,8 @@ def order():
     order = Order(first_name=firstname, last_name=lastname,
                   cellphone=cellphone, total=int(total))
     db.session.add(order)
+    db.session.commit()
+    order = Order.query.all()[-1]
     for item in items:
         title = item['title'].split(">")[1].split("<")[0]
         db.session.add(Item(title=title, total=int(item['total'].strip("$")),

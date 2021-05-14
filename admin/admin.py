@@ -60,9 +60,11 @@ class ProductAdminView(ModelView):
     def is_accessible(self):
         return login.current_user.is_authenticated
 
-    form_columns = ['title', 'image', 'price', 'description']
+    form_columns = ['title', 'image', 'price', 'description', 'flavors',
+                    'max_flavors']
     column_labels = dict(title='Titulo', image='Imagen', price='Precio',
-                         description='Descripcion')
+                         description='Descripcion', flavors='Sabores',
+                         max_flavors='Maximos sabores')
 
     form_overrides = {'image': ImageUploadField}
     form_args = {'image': {'base_path': SAVE_PATH,

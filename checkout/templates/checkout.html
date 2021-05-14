@@ -14,7 +14,7 @@
 						<th>Producto</th>
 						<th>Descripcion</th>
 						<th>Cantidad</th>
-						<th>Notas</th>
+						<th></th>
 						<th class="text-center">Precio</th>
 						<th class="text-center">Total</th>
 						<th> </th>
@@ -47,7 +47,32 @@
 								<input type="numeric" class="form-control" id="quantity{{ loop.index }}" name="quantity" onchange="updateTotal(this.value, {{ loop.index }})">
 							</td>
 							<td class="col-sm-1 col-md-1" style="text-align: center">
-								<input type="text" class="form-control" name="notes">
+								<p><strong>Elija como maximo {{ product.max_flavors }}</strong></p>
+								<script>
+									function checkmax(event, name, max){
+										var checkboxes=document.getElementsByName(name);
+										var counter = 0;
+										for(i = 0; i < checkboxes.length; i++){
+											if(checkboxes[i].checked){
+												counter++;
+												if(counter > max){
+													event.currentTarget.checked = false;
+													return
+												}
+											}
+										}
+									}
+								</script>
+								{% for flavor_list in flavors %}
+								{% for flavor in flavor_list %}
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" value="" id="{{ product.title }}{{ loop.index }}" name="<strong>{{ product.title }}</strong>" onchange="checkmax(event, this.name, {{ product.max_flavors }})">
+									<label class="form-check-label" for="{{ product.title }}{{ loop.index }}">
+										{{ flavor }}
+									</label>
+									{% endfor %}
+									{% endfor %}
+
 							</td>
 							<td class="col-sm-1 col-md-1 text-center" id="price{{ loop.index }}" value="{{ product.price }}"><strong>${{ product.price }}</strong></td>
 							<script>
@@ -105,14 +130,21 @@
 									var titles = document.getElementsByName("title");
 									var subtotals = document.getElementsByName("subtotal");
 									var quantities = document.getElementsByName("quantity");
-									var descriptions = document.getElementsByName("notes");
 									var form = document.getElementById("userData");
 									var firstName = form.elements[0];
 									var lastName = form.elements[1];
 									var cellphone = form.elements[2];
-									var items = []
-									for(i=0; i < titles.length; i++){
-										items[i] = {"title": titles[i].innerHTML, "total": subtotals[i].innerHTML, "quantity": quantities[i].value, "description": descriptions[i].value};
+									var items = [];
+									for(i = 0; i < titles.length; i++){
+										var check_flavors = document.getElementsByName(titles[i].innerHTML);
+										var description = "";
+										for(j = 0; j < check_flavors.length; j++){
+											if(check_flavors[j].checked){
+												description += check_flavors[j].labels[0].innerText;
+												description += " - ";
+											}
+										}
+										items[i] = {"title": titles[i].innerHTML, "total": subtotals[i].innerHTML, "quantity": quantities[i].value, "description": description};
 									}
 									var total = document.getElementById("totalCheckout").innerHTML;
 									$.ajax({

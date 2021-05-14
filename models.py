@@ -11,6 +11,8 @@ class Product(db.Model):
     image = db.Column(db.String(300), nullable=True)
     price = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(300), nullable=False)
+    flavors = db.Column(db.String(200), default=[])
+    max_flavors = db.Column(db.Integer, default=1)
 
     def __repr__(self):
         return self.title

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_login import LoginManager
 from flask_session import Session
 
@@ -18,6 +18,11 @@ admin_bp = AdminBluePrint(app)
 app.register_blueprint(products_bp, url_prefix='/products')
 app.register_blueprint(checkout_bp, url_prefix='/checkout')
 app.register_blueprint(admin_bp)
+
+
+@app.route("/", methods=['GET'])
+def home():
+    return render_template("about_us.html")
 
 
 def init_login():

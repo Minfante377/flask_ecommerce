@@ -2,6 +2,8 @@
 	<head>
 		{% block head %}
 		<style>
+		{% block style %}
+body {background-color: #F8FFF5;}
 .sidenav {
 	height: 100%; /* Full-height: remove this if you want "auto" height */
 	width: 160px; /* Set the width of the sidebar */
@@ -39,6 +41,7 @@
 		  .sidenav {padding-top: 15px;}
 		  .sidenav a {font-size: 18px;}
 	  }
+	  {% endblock %}
 		</style>
 	{% endblock %}
 	</head>

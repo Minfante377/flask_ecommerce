@@ -89,10 +89,22 @@ class OrderView(ModelView):
     can_view_details = True
     column_list = ('date', 'first_name', 'last_name', 'cellphone', 'total',
                    'items', 'done')
-    column_labels = dict(title='Nombre', image='Apellido',
+    column_labels = dict(first_name='Nombre', last_name='Apellido',
                          cellphone='Telefono', total='Total',
                          items='Items', done="Entregada",
                          date="Fecha")
+
+
+class CustomerView(ModelView):
+
+    def is_accessible(self):
+        return login.current_user.is_authenticated
+
+    column_hide_backrefs = False
+    can_view_details = True
+    column_list = ('first_name', 'last_name', 'cellphone', 'orders')
+    column_labels = dict(first_name='Nombre', last_name='Apellido',
+                         cellphone='Telefono', orders='Pedidos')
 
 
 class AdminBluePrint(Blueprint):
@@ -119,6 +131,9 @@ class AdminBluePrint(Blueprint):
 
     def add_order_view(self, view, db):
         self.admin.add_view(OrderView(view, db.session))
+
+    def add_customer_view(self, view, db):
+        self.admin.add_view(CustomerView(view, db.session))
 
     def register(self, app, options, first_registration=False):
         return super(AdminBluePrint, self).register(app, options,

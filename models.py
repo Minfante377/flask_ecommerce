@@ -59,6 +59,8 @@ class Item(db.Model):
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'),
+                            nullable=False)
     date = db.Column(db.String(20), nullable=False)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
@@ -68,7 +70,15 @@ class Order(db.Model):
     items = db.relationship('Item', backref='order')
 
     def __repr__(self):
-        return str(self.id)
+        return "[{}]: ${} | {}\n".format(self.date, self.total, self.items)
+
+
+class Customer(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    cellphone = db.Column(db.String(20), nullable=False)
+    orders = db.relationship('Order', backref='customer')
 
 
 db.create_all(app=app)

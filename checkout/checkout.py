@@ -29,6 +29,22 @@ def clear_product():
     return "No product deleted!"
 
 
+def add_customer(first_name, last_name, cellphone):
+    from models import Customer, db
+    customer = Customer.query.filter_by(first_name=first_name,
+                                        last_name=last_name).first()
+    if not customer:
+        customer = Customer(first_name=first_name, last_name=last_name,
+                            cellphone=cellphone)
+        db.session.add(customer)
+        db.session.commit()
+        customer = Customer.query.all()[-1]
+    else:
+        customer.cellphone = cellphone
+        db.session.commit()
+    return customer.id
+
+
 @checkout_bp.route('/order', methods=['POST'])
 def order():
     from models import Item, Order, db
@@ -52,9 +68,10 @@ def order():
 
     now = datetime.now()
     ts = now.strftime("%d/%m/%Y %H:%M")
+    customer_id = add_customer(firstname, lastname, cellphone)
     order = Order(first_name=firstname, last_name=lastname,
                   cellphone=cellphone, total=int(total),
-                  date=ts)
+                  date=ts, customer_id=customer_id)
     db.session.add(order)
     db.session.commit()
     order = Order.query.all()[-1]

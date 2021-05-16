@@ -67,16 +67,13 @@ body{background-color: #F8FFF5;}
 										}
 									}
 								</script>
-								{% for flavor_list in flavors %}
-								{% for flavor in flavor_list %}
+								{% for flavor in flavors[loop.index - 1] %}
 								<div class="form-check">
 									<input class="form-check-input" type="checkbox" value="" id="{{ product.title }}{{ loop.index }}" name="<strong>{{ product.title }}</strong>" onchange="checkmax(event, this.name, {{ product.max_flavors }})">
 									<label class="form-check-label" for="{{ product.title }}{{ loop.index }}">
 										{{ flavor }}
 									</label>
 									{% endfor %}
-									{% endfor %}
-
 							</td>
 							<td class="col-sm-1 col-md-1 text-center" id="price{{ loop.index }}" value="{{ product.price }}"><strong>${{ product.price }}</strong></td>
 							<script>

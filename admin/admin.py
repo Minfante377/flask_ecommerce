@@ -1,11 +1,14 @@
-from flask import Blueprint, url_for, redirect, request, render_template
+from flask import Blueprint, url_for, redirect, request, render_template,\
+    Response
 from flask_admin import Admin, AdminIndexView, expose, helpers
+from flask_admin.actions import action
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.form.upload import ImageUploadField
 import flask_login as login
 
 from wtforms import form, fields, validators
 from werkzeug.security import check_password_hash, generate_password_hash
+import io
 
 
 ALLOWED_IMAGE_EXTENSIONS = ['jpg', 'png', 'jpeg']
@@ -85,6 +88,28 @@ class OrderView(ModelView):
     def is_accessible(self):
         return login.current_user.is_authenticated
 
+    @action('export', 'Exportar a CSV')
+    def export(self, ids):
+        from models import Order
+        orders = Order.query.filter(Order.id.in_(ids)).all()
+        f = io.StringIO()
+        f.write(u"ID;Fecha;Nombre;Apellido;Total;Items\n")
+        name = ''
+        for order in orders:
+            f.write(u"{};{};{};{};{};{}\n".format(order.id,
+                                                  order.date,
+                                                  order.first_name,
+                                                  order.last_name,
+                                                  order.total,
+                                                  order.items))
+            name += "{}".format(order.id)
+        f.seek(0)
+        return Response(
+            f.read(),
+            mimetype="text/csv",
+            headers={"Content-Disposition":
+                     "attachment;filename={}.csv".format(name)})
+
     column_hide_backrefs = False
     can_view_details = True
     column_list = ('id', 'date', 'first_name', 'last_name', 'cellphone',
@@ -99,6 +124,26 @@ class CustomerView(ModelView):
 
     def is_accessible(self):
         return login.current_user.is_authenticated
+
+    @action('export', 'Exportar a CSV')
+    def export(self, ids):
+        from models import Customer
+        customers = Customer.query.filter(Customer.id.in_(ids)).all()
+        f = io.StringIO()
+        f.write(u"Nombre;Apellido;Telefono;Ordenes\n")
+        name = ''
+        for customer in customers:
+            f.write(u"{};{};{};{}\n".format(customer.first_name,
+                                            customer.last_name,
+                                            customer.cellphone,
+                                            customer.orders))
+            name += "{}".format(customer.id)
+        f.seek(0)
+        return Response(
+            f.read(),
+            mimetype="text/csv",
+            headers={"Content-Disposition":
+                     "attachment;filename={}.csv".format(name)})
 
     column_hide_backrefs = False
     can_view_details = True

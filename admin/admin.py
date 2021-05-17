@@ -87,9 +87,9 @@ class OrderView(ModelView):
 
     column_hide_backrefs = False
     can_view_details = True
-    column_list = ('date', 'first_name', 'last_name', 'cellphone', 'total',
-                   'items', 'done')
-    column_labels = dict(first_name='Nombre', last_name='Apellido',
+    column_list = ('id', 'date', 'first_name', 'last_name', 'cellphone',
+                   'total', 'items', 'done')
+    column_labels = dict(id='ID', first_name='Nombre', last_name='Apellido',
                          cellphone='Telefono', total='Total',
                          items='Items', done="Entregada",
                          date="Fecha")
@@ -103,6 +103,7 @@ class CustomerView(ModelView):
     column_hide_backrefs = False
     can_view_details = True
     column_list = ('first_name', 'last_name', 'cellphone', 'orders')
+    column_filters = ('first_name', 'last_name')
     column_labels = dict(first_name='Nombre', last_name='Apellido',
                          cellphone='Telefono', orders='Pedidos')
 

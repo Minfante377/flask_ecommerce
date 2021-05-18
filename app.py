@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, redirect, url_for
 from flask_login import LoginManager
 from flask_session import Session
 
@@ -22,7 +22,7 @@ app.register_blueprint(admin_bp)
 
 @app.route("/", methods=['GET'])
 def home():
-    return render_template("about_us.html")
+    return redirect(url_for("products.list"))
 
 
 def init_login():

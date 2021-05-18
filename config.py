@@ -2,13 +2,17 @@ import os
 
 
 PWD = os.path.abspath(os.curdir)
-DEBUG = True
+DEBUG = False
 
 # Security
 SECRET_KEY = 'SUPER SECRET KEY'
 
 # Database
-SQLALCHEMY_DATABASE_URI = 'sqlite:///{}/dbase.db'.format(PWD)
+if DEBUG:
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///{}/dbase.db'.format(PWD)
+else:
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').\
+        replace("postgres", "postgresql")
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # Admin

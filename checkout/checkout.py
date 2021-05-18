@@ -9,7 +9,7 @@ checkout_bp = Blueprint('checkout', __name__, template_folder='templates',
 
 @checkout_bp.route('/')
 def make_order():
-    products = session['session_products']
+    products = session.get('session_products', [])
     flavors = []
     for product in products:
         flavors.append(product.flavors.strip().split(','))

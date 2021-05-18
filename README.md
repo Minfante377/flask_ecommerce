@@ -20,5 +20,4 @@ the client to arrange a payment method.
 - Send a telegram message or email every time a client creates an order.
 - Use PostgressSQL insted of SQLite.
 - Make the website not so ugly.
-- Add everything needed to deploy it to Heroku.
 - Add some basic UI tests using pytest and Selenium
